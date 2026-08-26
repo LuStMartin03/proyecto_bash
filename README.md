@@ -1,6 +1,6 @@
-#Proyecto Bash
+# Proyecto Bash
 
-##Integrantes:
+## Integrantes:
 
 - Kiara Koo
 - Valentina Carera
