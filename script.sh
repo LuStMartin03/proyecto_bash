@@ -1,15 +1,24 @@
 #!/bin/bash
 
 opcion=0
+PID_CONSOLIDAR="consolidar.pid"
 
 # Verificamos si se paso el parametro optativo:
 if [ "$1" == "-d" ]; then
-    rm -rf EPNro1/entrada EPNro1/salida EPNro1/procesado
+    if [ -f "EPNro1/consolidar.sh" ]; then
+        mv EPNro1/consolidar.sh consolidar.sh
+    fi
+    if [ -f "$PID_CONSOLIDAR" ] && kill -0 $(cat "$PID_CONSOLIDAR"); then
+        kill $(cat "$PID_CONSOLIDAR")
+        rm -f "$PID_CONSOLIDAR"
+        rm -f nohup.out
+        echo "Proceso consolidar.sh detenido."
+    fi
+    rm -rf EPNro1
     echo "Entorno eliminado."
 fi
 
 while [ $opcion -ne 7 ]; do
-
     # Mostramos el menu de opciones:
     echo "Menu de opciones:"
     echo "1. Crear entorno"
@@ -24,15 +33,18 @@ while [ $opcion -ne 7 ]; do
 
     if [ $opcion -eq 1 ]; then
         # Creamos el entorno:
-        mkdir -p EPNro1
         mkdir -p EPNro1/entrada EPNro1/salida EPNro1/procesado
 
     elif [ $opcion -eq 2 ]; then
-        # Coming soon: Correr proceso
-        if pgrep -f "EPNro1/consolidar.sh" > /dev/null; then
+        # verifica si consolidar.sh se encuentra en el directorio actual y lo mueve a EPNro1 si es así
+        if [ -f "consolidar.sh" ]; then
+            mv consolidar.sh EPNro1/consolidar.sh    
+        fi
+        # verificamos si el proceso ya se está ejecutando y si no lo está, se inicia en background:
+        if [ -f "$PID_CONSOLIDAR" ] && kill -0 $(cat "$PID_CONSOLIDAR"); then
             echo "El proceso ya se está ejecutando."
         else
-            setsid ./EPNro1/consolidar.sh > /dev/null 2>&1 &
+            nohup EPNro1/consolidar.sh > nohup.out 2>&1 & echo $! > "$PID_CONSOLIDAR"
             echo "Proceso consolidar.sh iniciado correctamente en background."
         fi
         
