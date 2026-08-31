@@ -3,7 +3,7 @@
 # Hacemos un loop infinito para procesar los archivos de /entrada:
 while [ true ]; do
     # Verificamos que haya al menos un archivo en /entrada:
-    if [ "$(ls -A "entrada")" ]; then
+    if [ "$(ls -A "./entrada")" ]; then
         for archivo in "./entrada"/*; do
             if [ -f "$archivo" ]; then
                 # Procesamos el archivo:
