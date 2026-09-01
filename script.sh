@@ -87,8 +87,5 @@ while [ $opcion -ne 7 ]; do
         # Salimos del programa:
         echo "Saliendo del programa."
         
-    else
-        echo "Opción no válida."
-        opcion=0
     fi
 done
