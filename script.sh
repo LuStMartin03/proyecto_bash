@@ -38,13 +38,14 @@ while [ $opcion -ne 7 ]; do
     elif [[ $opcion -eq 1 ]]; then
         # Creamos el entorno:
         mkdir -p EPNro1/entrada EPNro1/salida EPNro1/procesado
+        echo "Entorno creado."
 
     elif [ $opcion -eq 2 ]; then
-        # verifica si consolidar.sh se encuentra en el directorio actual y lo mueve a EPNro1 si es así
+        # Verificamos si consolidar.sh se encuentra en el directorio actual y lo mueve a EPNro1 si es así
         if [ -f "consolidar.sh" ]; then
             mv consolidar.sh EPNro1/consolidar.sh    
         fi
-        # verificamos si el proceso ya se está ejecutando y si no lo está, se inicia en background:
+        # Verificamos si el proceso ya se está ejecutando y si no lo está, se inicia en background:
         if [ -f "$PID_CONSOLIDAR" ] && kill -0 $(cat "$PID_CONSOLIDAR"); then
             echo "El proceso ya se está ejecutando."
         else
@@ -70,7 +71,7 @@ while [ $opcion -ne 7 ]; do
 
     elif [[ $opcion -eq 5 ]]; then
         # Mostramos el alumno por padron:
-        echo "Solicito tu padron"
+        echo "Ingrese su padron:"
         read padron
         grep $padron "EPNro1/salida/${FILENAME}.txt" || echo "No se encontró el padron."
     
@@ -85,6 +86,7 @@ while [ $opcion -ne 7 ]; do
     elif [[ $opcion -eq 7 ]]; then
         # Salimos del programa:
         echo "Saliendo del programa."
+        
     else
         echo "Opción no válida."
         opcion=0
